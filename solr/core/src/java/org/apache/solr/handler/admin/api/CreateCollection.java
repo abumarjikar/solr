@@ -33,6 +33,7 @@ import static org.apache.solr.common.params.CollectionAdminParams.PULL_REPLICAS;
 import static org.apache.solr.common.params.CollectionAdminParams.REPLICATION_FACTOR;
 import static org.apache.solr.common.params.CollectionAdminParams.TLOG_REPLICAS;
 import static org.apache.solr.common.params.CommonAdminParams.ASYNC;
+import static org.apache.solr.common.params.CommonAdminParams.WAIT_FOR_FINAL_STATE;
 import static org.apache.solr.common.params.CoreAdminParams.NAME;
 import static org.apache.solr.handler.admin.CollectionsHandler.waitForActiveCollection;
 import static org.apache.solr.handler.api.V2ApiUtils.flattenMapWithPrefix;
@@ -153,6 +154,7 @@ public class CreateCollection extends AdminAPIBase implements CreateCollectionAp
       rawProperties.put(SHARDS_PROP, String.join(",", reqBody.shardNames));
     rawProperties.put(PULL_REPLICAS, reqBody.pullReplicas);
     rawProperties.put(TLOG_REPLICAS, reqBody.tlogReplicas);
+    rawProperties.put(WAIT_FOR_FINAL_STATE, reqBody.waitForFinalState);
     rawProperties.put(PER_REPLICA_STATE, reqBody.perReplicaState);
     rawProperties.put(ALIAS, reqBody.alias);
     if (reqBody.createReplicas == null || reqBody.createReplicas) {
@@ -244,6 +246,7 @@ public class CreateCollection extends AdminAPIBase implements CreateCollectionAp
     requestBody.tlogReplicas = params.getInt(ZkStateReader.TLOG_REPLICAS);
     requestBody.pullReplicas = params.getInt(ZkStateReader.PULL_REPLICAS);
     requestBody.nrtReplicas = params.getInt(ZkStateReader.NRT_REPLICAS);
+    requestBody.waitForFinalState = params.getBool(WAIT_FOR_FINAL_STATE);
     requestBody.perReplicaState = params.getBool(PER_REPLICA_STATE);
     requestBody.alias = params.get(ALIAS);
     requestBody.async = params.get(ASYNC);
